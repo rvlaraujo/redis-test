@@ -1,2 +1,2 @@
 # redis-test
-A simple repo that I made some tests with Redis and Node.js
+A simple repo where I made some tests for learning Redis using Node.js.
