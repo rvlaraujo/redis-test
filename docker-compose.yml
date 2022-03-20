@@ -5,13 +5,31 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - redis
+      - redis-master
     volumes:
       - .:/app
     ports:
       - "8000:8000"
-  redis:
+  redis-master:
     image: redis:latest
     ports:
       - "6379:6379"
     command: redis-server --save 60 1 --requirepass root --loglevel warning
+  # redis-slave:
+  #   image: redis:latest
+  #   ports:
+  #     - "6380:6380"
+  #   command: redis-server --port 6380 --save 60 1 --requirepass root --loglevel warning
+  #   environment:
+  #     - REDIS_REPLICATION_MODE=slave
+  #     - REDIS_MASTER_HOST=redis-master
+  #     - REDIS_MASTER_PORT_NUMBER=6379
+  #     - REDIS_MASTER_PASSWORD=root
+  #     - REDIS_PASSWORD=root
+  #     - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+  #   depends_on:
+  #     - redis-master
+
+volumes:
+  redis_data:
+    driver: local
